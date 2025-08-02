@@ -1,0 +1,15 @@
+#!/bin/bash
+user="$2"
+user2=$(grep -E "^### " "/etc/vmess/listlock" | cut -d ' ' -f 2 | sort | uniq)
+exp=$(grep -E "^### " "/etc/vmess/listlock" | cut -d ' ' -f 3 | sort | uniq)
+uuid=$(grep -E "^### " "/etc/vmess/listlock" | cut -d ' ' -f 4 | sort | uniq)
+sed -i '/#vmess$/a\#vm '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+sed -i '/#vmessgrpc$/a\#vmg '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+sed -i "/^### $user $exp $uuid/d" /etc/vmess/listlock
+rm -rf /etc/cron.d/vmess$user
+systemctl restart xray
+#user2=$(grep -wE "^### $user" "/etc/vmess/listlock" | cut -d ' ' -f 2 | sort | uniq)
+#exp=$(grep -wE "^### $user" "/etc/vmess/listlock" | cut -d ' ' -f 3 | sort | uniq)
+#uuid=$(grep -wE "^### $user" "/etc/vmess/listlock" | cut -d ' ' -f 4 | sort | uniq)
