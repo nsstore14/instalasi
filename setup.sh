@@ -61,6 +61,9 @@ checking_sc() {
     echo -e "            \033[91;1mPERMISSION DENIED !\033[0m"
     echo -e "   \033[0;33mYour VPS\033[0m $ipsaya \033[0;33mHas been Banned\033[0m"
     echo -e "     \033[0;33mBuy access permissions for scripts\033[0m"
+    echo -e "             \033[0;33mContact Admin :\033[0m"
+    echo -e "      \033[2;32mWhatsApp\033[0m wa.me/6282380835972"
+	echo -e "      \033[2;32mTelegram\033[0m t.me/Deaswara"
     echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
     exit
   fi
@@ -112,7 +115,7 @@ MYIP=$(curl -sS ipv4.icanhazip.com)
 echo -e "\e[32mloading...\e[0m"
 clear
 apt install ruby -y
-gem install lolcat
+apt install lolcat -y
 apt install wondershaper -y
 clear
 # REPO    
@@ -344,7 +347,7 @@ URL="https://api.telegram.org/bot$KEY/sendMessage"
 <code>Exp Sc.  :</code><code>$exp</code>
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
 <i>Automatic Notifications From Github</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"http://t.me/Jayamapan"}]]}' 
+"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"http://wa.me/+6282380835972"}]]}' 
 
     curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }
@@ -426,8 +429,8 @@ clear
 #latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
 # / / Installation Xray Core
 xraycore_link="https://github.com/XTLS/Xray-core/releases/download/v1.8.1/xray-linux-64.zip"
-# / / Ambil Xray Core Version Terbaru
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version version 1.8.1
+
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.8.1
 
 # / / Make Main Directory
 mkdir -p /usr/bin/xray
@@ -794,7 +797,6 @@ wget --no-check-certificate https://raw.githubusercontent.com/nsstore14/instalas
 unzip noobzvpns.zip
 cd noobzvpns
 bash install.sh
-rm noobzvpns.zip
 systemctl start noobzvpns.service
 systemctl enable noobzvpns.service
 cd
@@ -922,6 +924,7 @@ cd
     unzip menu.zip
     chmod +x menu/*
     mv menu/* /usr/local/sbin
+    mkdir -p /root/enc
     rm -rf menu
     rm -rf menu.zip
     rm -rf *.sh*
