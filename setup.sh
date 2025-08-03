@@ -116,7 +116,7 @@ gem install lolcat
 apt install wondershaper -y
 clear
 # REPO    
-    REPO="https://raw.githubusercontent.com/nsstore14/script/main/"
+    REPO="https://raw.githubusercontent.com/nsstore14/instalasi/main/"
 
 ####
 start=$(date +%s)
@@ -568,7 +568,7 @@ print_success "Password SSH"
 function udp_mini(){
 clear
 print_install "Memasang Service Limit IP & Quota"
-wget -q https://raw.githubusercontent.com/nsstore14/script/main/config/fv-tunnel && chmod +x fv-tunnel && ./fv-tunnel
+wget -q https://raw.githubusercontent.com/nsstore14/instalasi/main/config/fv-tunnel && chmod +x fv-tunnel && ./fv-tunnel
 
 # // Installing UDP Mini
 mkdir -p /usr/local/kyt/
@@ -790,7 +790,7 @@ print_success "ePro WebSocket Proxy"
 }
 function noobzvpn(){
 clear
-wget --no-check-certificate https://raw.githubusercontent.com/nsstore14/script/main/noobzvpns.zip
+wget --no-check-certificate https://raw.githubusercontent.com/nsstore14/instalasi/main/noobzvpns.zip
 unzip noobzvpns.zip
 cd noobzvpns
 bash install.sh
@@ -918,7 +918,7 @@ cd
 
     clear
     print_install "Memasang Menu Packet"
-    wget ${REPO}menu/menu.zip
+    wget https://raw.githubusercontent.com/nsstore14/instalasi/main/menu/menu.zip
     unzip menu.zip
     chmod +x menu/*
     mv menu/* /usr/local/sbin
