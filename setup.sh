@@ -759,11 +759,11 @@ function ins_Fail2ban(){
 function ins_epro(){
 clear
 print_install "Menginstall WebSocket Python"
-wget -O /usr/bin/ws-stunnel "${REPO}files/ws-stunnel" >/dev/null 2>&1
-wget -O /usr/bin/tun.conf "${REPO}config/tun.conf" >/dev/null 2>&1
-wget -O /etc/systemd/system/ws-stunnel.service "${REPO}files/ws-stunnel.service" >/dev/null 2>&1
+wget -O /usr/local/bin/ws-stunnel "${REPO}files/ws-stunnel"
+wget -O /usr/bin/tun.conf "${REPO}config/tun.conf"
+wget -O /etc/systemd/system/ws-stunnel.service "${REPO}files/ws-stunnel.service"
 chmod +x /etc/systemd/system/ws-stunnel.service
-chmod +x /usr/bin/ws-stunnel
+chmod +x /usr/local/bin/ws-stunnel
 chmod 644 /usr/bin/tun.conf
 systemctl disable ws-stunnel
 systemctl stop ws-stunnel
@@ -1055,19 +1055,19 @@ clear
     pasang_domain
     password_default
     nginx_install
-    install_xray
     pasang_ssl
+    install_xray
     ssh
     udp_mini
     ssh_slow
     ins_SSHD
     ins_dropbear
+    ins_epro
     ins_vnstat
     ins_openvpn
     ins_backup
     # ins_swab
     ins_Fail2ban
-    ins_epro
     noobzvpn
     ins_restart
     menu
