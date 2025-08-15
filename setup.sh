@@ -23,7 +23,7 @@ clear;clear;clear
 
 # // Banner
 echo -e "${BIBlue}╭══════════════════════════════════════════════════════╮${NC}"
-echo -e "${BIBlue}│ ${BGCOLOR}  WELCOME TO AUTOSCRIPT PREMIUM NS VPN PROJECT          ${BIBlue} │${NC}"
+echo -e "${BIBlue}│ ${BGCOLOR}  WELCOME TO AUTOSCRIPT PREMIUM NS VPN PROJECT      ${BIBlue} │${NC}"
 echo -e "${BIBlue}╰══════════════════════════════════════════════════════╯${NC}"
 echo ""
 sleep 4
