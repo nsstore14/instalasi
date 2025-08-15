@@ -70,44 +70,39 @@ checking_sc() {
   fi
 }
 checking_sc
-# // Checking Os Architecture
-if [[ $( uname -m | awk '{print $1}' ) == "x86_64" ]]; then
-    echo -e "${OK} Your Architecture Is Supported ( ${LIME}$( uname -m )${NC} )"
-else
-    echo -e "${EROR} Your Architecture Is Not Supported ( ${YELLOW}$( uname -m )${NC} )"
-    exit 1
-fi
-
-# // Checking System
-if [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "ubuntu" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${LIME}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
-elif [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "debian" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${LIME}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
-else
-    echo -e "${EROR} Your OS Is Not Supported ( ${YELLOW}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
-    exit 1
-fi
-
-# // IP Address Validating
-if [[ $IP == "" ]]; then
-    echo -e "${EROR} IP Address ( ${YELLOW}Not Detected${NC} )"
-else
-    echo -e "${OK} IP Address ( ${LIME}$IP${NC} )"
-fi
-
-# // Validate Successfull
-echo ""
-read -p "$( echo -e "Press ${GRAY}[ ${NC}${LIME}Enter${NC} ${GRAY}]${NC} For Starting Installation") "
-echo ""
-clear
 if [ "${EUID}" -ne 0 ]; then
-		echo "You need to run this script as root"
-		exit 1
+    echo -e "${RED}You need to run this script as root"
+    exit 1
 fi
 if [ "$(systemd-detect-virt)" == "openvz" ]; then
-		echo "OpenVZ is not supported"
-		exit 1
+    echo -e "${RED}OpenVZ is not supported"
+    return
 fi
+IP=$(curl -sS icanhazip.com)
+if [[ -z $IP ]]; then
+    echo -e "${RED}IP Address ${YELLOW}Not Detected${NC}"
+else
+    echo -e "${BIWhite}IP Address ${BIBlue}${IP}${NC}"
+fi
+ARCH=$(uname -m)
+if [[ $ARCH == "x86_64" ]]; then
+    echo -e "${BIWhite}Your Architecture Is Supported ${BIBlue}${ARCH}${NC}"
+else
+    echo -e "${RED}Your Architecture Is Not Supported ${YELLOW}${ARCH}${NC}"
+    return
+fi
+OS_ID=$(grep -w ^ID /etc/os-release | cut -d= -f2 | tr -d '"')
+OS_NAME=$(grep -w ^PRETTY_NAME /etc/os-release | cut -d= -f2 | tr -d '"')
+if [[ $OS_ID == "ubuntu" || $OS_ID == "debian" ]]; then
+    echo -e "${BIWhite}Your OS Is Supported ${BIBlue}${OS_NAME}${NC}"
+else
+    echo -e "${RED}Your OS Is Not Supported ${YELLOW}${OS_NAME}${NC}"
+    return
+fi
+echo ""
+read -p "$( echo -e "${BIWhite}Press ${BIBlue}[${BIWhite} Enter ${BIBlue}]${BIWhite} For Starting Installation${NC}") "
+echo ""
+clear
 red='\e[1;31m'
 green='\e[0;32m'
 NC='\e[0m'
