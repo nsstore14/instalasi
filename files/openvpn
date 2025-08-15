@@ -19,7 +19,7 @@ cp /usr/lib/x86_64-linux-gnu/openvpn/plugins/openvpn-plugin-auth-pam.so /usr/lib
 sed -i 's/#AUTOSTART="all"/AUTOSTART="all"/g' /etc/default/openvpn
 systemctl enable --now openvpn-server@server-tcp
 systemctl enable --now openvpn-server@server-udp
-/etc/init.d/openvpn restart
+systemctl restart openvpn
 }
 function make_follow() {
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -125,6 +125,6 @@ make_follow
 cert_ovpn
 systemctl enable openvpn
 systemctl start openvpn
-/etc/init.d/openvpn restart
+systemctl restart openvpn
 }
 install_ovpn
