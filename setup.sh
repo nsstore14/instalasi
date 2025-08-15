@@ -861,25 +861,72 @@ EOF
 }
 
 function ins_Fail2ban(){
+    set -euo pipefail
     clear
     print_install "Memasang Fail2ban"
-    apt update -y && apt install -y fail2ban > /dev/null 2>&1
+
+    apt-get update -y >/dev/null 2>&1
+    apt-get install -y --no-install-recommends fail2ban curl wget unzip ca-certificates >/dev/null 2>&1
+
     if [ -d "/usr/local/ddos" ]; then
-        echo -e "\nUninstalling The Previous Version First..."
+        echo -e "\nUninstalling previous ddos-deflate..."
         rm -rf /usr/local/ddos
     fi
-    mkdir -p /usr/local/ddos
-    for file in ddos.conf LICENSE ignore.ip.list ddos.sh; do
-        wget -q -O "/usr/local/ddos/$file" "http://www.inetbase.com/scripts/ddos/$file" || \
-        curl -s -o "/usr/local/ddos/$file" "http://www.inetbase.com/scripts/ddos/$file"
-        echo -n '.'
-    done
-    echo ""
-    chmod +x /usr/local/ddos/ddos.sh
-    ln -sf /usr/local/ddos/ddos.sh /usr/local/sbin/ddos
-    /usr/local/ddos/ddos.sh --cron > /dev/null 2>&1
-    systemctl enable --now fail2ban
-    systemctl restart fail2ban    
+
+    tmpdir="$(mktemp -d)"
+    zipfile="$tmpdir/ddos.zip"
+    if ! curl -L -s -o "$zipfile" "https://github.com/jgmdev/ddos-deflate/archive/refs/heads/master.zip"; then
+        wget -q -O "$zipfile" "https://github.com/jgmdev/ddos-deflate/archive/refs/heads/master.zip"
+    fi
+
+    unzip -q "$zipfile" -d "$tmpdir"
+    srcdir="$(find "$tmpdir" -maxdepth 1 -type d -name 'ddos-deflate-*' | head -n1)"
+
+    if [ -x "$srcdir/install.sh" ]; then
+        ( yes "" 2>/dev/null || true ) | bash "$srcdir/install.sh" >/dev/null 2>&1 || {
+            manual_install=true
+        }
+    else
+        manual_install=true
+    fi
+
+    if [ "${manual_install:-false}" = true ]; then
+        mkdir -p /etc/ddos /usr/local/ddos
+        cp -f "$srcdir"/ddos.sh /usr/local/ddos/
+        if [ -f "$srcdir/ignore.ip.list" ]; then
+            cp -f "$srcdir/ignore.ip.list" /etc/ddos/
+        elif [ -f "$srcdir/ignore.host.list" ]; then
+            cp -f "$srcdir/ignore.host.list" /etc/ddos/ignore.ip.list
+        else
+            touch /etc/ddos/ignore.ip.list
+        fi
+        if [ -f "$srcdir/ddos.conf" ]; then
+            cp -f "$srcdir/ddos.conf" /etc/ddos/
+        else
+            cat >/etc/ddos/ddos.conf <<'EOF'
+FREQ=1
+NO_OF_CONNECTIONS=150
+EMAIL_TO=""
+BAN_PERIOD=600
+APF_BAN=0
+IPT_BAN=1
+KILL=1
+EOF
+        fi
+        chmod +x /usr/local/ddos/ddos.sh
+        ln -sf /usr/local/ddos/ddos.sh /usr/local/sbin/ddos
+    fi
+
+    if command -v ddos >/dev/null 2>&1; then
+        ddos -c >/dev/null 2>&1 || ddos --cron >/dev/null 2>&1 || {
+            ( crontab -l 2>/dev/null | grep -v '/usr/local/ddos/ddos.sh'; echo "* * * * * /usr/local/ddos/ddos.sh >/dev/null 2>&1" ) | crontab -
+        }
+    fi
+
+    systemctl enable --now fail2ban >/dev/null 2>&1 || true
+    systemctl restart fail2ban >/dev/null 2>&1 || true
+
+    rm -rf "$tmpdir"
     print_success "Fail2ban"
 }
 
