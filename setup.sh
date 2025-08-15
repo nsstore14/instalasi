@@ -1164,24 +1164,24 @@ print_install "Enable Service"
 function instal(){
 clear
     first_setup
+    nginx_install
     base_package
     make_folder_xray
     pasang_domain
     password_default
-    nginx_install
     pasang_ssl
     install_xray
     ssh
     udp_mini
     ssh_slow
     ins_SSHD
+    ins_dropbear
     ins_vnstat
     ins_openvpn
     ins_backup
     ins_bbr_hybla
     ins_Fail2ban
-    ins_dropbear
-    ins_wspy
+    ins_wspy    
     noobzvpn
     ins_restart
     menu
