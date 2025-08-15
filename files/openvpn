@@ -4,6 +4,8 @@ OS=`uname -m`;
 MYIP=$(wget -qO- ipinfo.io/ip);
 domain=$(cat /root/domain)
 MYIP2="s/xxxxxxxxx/$domain/g";
+apt update -y
+apt install -y openvpn easy-rsa unzip curl wget zip
 function ovpn_install() {
 rm -rf /etc/openvpn
 mkdir -p /etc/openvpn
