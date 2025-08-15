@@ -1,12 +1,12 @@
 #!/bin/bash
 Green="\e[92;1m"
 RED="\033[31m"
-YELLOW="\033[33m"
+YELLOW="\033[1;93m"
 BLUE="\033[36m"
 FONT="\033[0m"
 GREENBG="\033[42;37m"
 REDBG="\033[41;37m"
-OK="${Green}  »${FONT}"
+OK="${LIME}  »${FONT}"
 ERROR="${RED}[ERROR]${FONT}"
 GRAY="\e[1;30m"
 BIBlue="\e[38;5;99m"
@@ -14,6 +14,7 @@ BIWhite="\033[1;97m"
 NC='\e[0m'
 red='\e[1;31m'
 green='\e[0;32m'
+LIME='\e[38;5;155m'
 clear
 export DEBIAN_FRONTEND=noninteractive
 export IP=$( curl -sS ipv4.icanhazip.com )
@@ -25,13 +26,13 @@ clear;clear;clear
 
 # // Banner
 echo -e "${BIBlue}╭══════════════════════════════════════════════════════╮${NC}"
-echo -e "${BIWhite}│    ${BGCOLOR}  WELCOME TO AUTOSCRIPT PREMIUM NS VPN PROJECT   ${BIBlue} │${NC}"
+echo -e "${BIBlue}│    ${BIWhite}  WELCOME TO AUTOSCRIPT PREMIUM NS VPN PROJECT   ${BIBlue} │${NC}"
 echo -e "${BIBlue}╰══════════════════════════════════════════════════════╯${NC}"
 echo ""
 sleep 4
 clear
 echo -e "${BIBlue}╭══════════════════════════════════════════╮${NC}"
-echo -e "${BIWhite}│ ${BGCOLOR}           MASUKKAN NAMA KAMU           ${NC}${BIBlue} │${NC}"
+echo -e "${BIBlue}│ ${BIWhite}           MASUKKAN NAMA KAMU           ${BIBlue} │${NC}"
 echo -e "${BIBlue}╰══════════════════════════════════════════╯${NC}"
 echo " "
 until [[ $name =~ ^[a-zA-Z0-9_.-]+$ ]]; do
@@ -71,7 +72,7 @@ checking_sc() {
 checking_sc
 # // Checking Os Architecture
 if [[ $( uname -m | awk '{print $1}' ) == "x86_64" ]]; then
-    echo -e "${OK} Your Architecture Is Supported ( ${green}$( uname -m )${NC} )"
+    echo -e "${OK} Your Architecture Is Supported ( ${LIME}$( uname -m )${NC} )"
 else
     echo -e "${EROR} Your Architecture Is Not Supported ( ${YELLOW}$( uname -m )${NC} )"
     exit 1
@@ -79,9 +80,9 @@ fi
 
 # // Checking System
 if [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "ubuntu" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${green}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
+    echo -e "${OK} Your OS Is Supported ( ${LIME}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
 elif [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "debian" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${green}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
+    echo -e "${OK} Your OS Is Supported ( ${LIME}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
 else
     echo -e "${EROR} Your OS Is Not Supported ( ${YELLOW}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
     exit 1
@@ -91,12 +92,12 @@ fi
 if [[ $IP == "" ]]; then
     echo -e "${EROR} IP Address ( ${YELLOW}Not Detected${NC} )"
 else
-    echo -e "${OK} IP Address ( ${green}$IP${NC} )"
+    echo -e "${OK} IP Address ( ${LIME}$IP${NC} )"
 fi
 
 # // Validate Successfull
 echo ""
-read -p "$( echo -e "Press ${GRAY}[ ${NC}${green}Enter${NC} ${GRAY}]${NC} For Starting Installation") "
+read -p "$( echo -e "Press ${GRAY}[ ${NC}${LIME}Enter${NC} ${GRAY}]${NC} For Starting Installation") "
 echo ""
 clear
 if [ "${EUID}" -ne 0 ]; then
@@ -327,7 +328,7 @@ mai="datediff "$Exp" "$DATE""
 
 ISP=$(curl -s ipinfo.io/org | cut -d " " -f 2-10 )
 # Status Expired Active
-Info="(${green}Active${NC})"
+Info="(${LIME}Active${NC})"
 Error="(${RED}ExpiRED${NC})"
 today=`date -d "0 days" +"%Y-%m-%d"`
 Exp1=$(curl $izinsc | grep $MYIP | awk '{print $4}')
@@ -375,6 +376,7 @@ print_install "Memasang SSL Pada Domain"
     mkdir /root/.acme.sh
     systemctl stop $STOPWEBSERVER
     systemctl stop nginx
+    systemctl stop haproxy
     curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
     chmod +x /root/.acme.sh/acme.sh
     /root/.acme.sh/acme.sh --upgrade --auto-upgrade
@@ -628,8 +630,7 @@ clear
 function ins_dropbear(){
 clear
 print_install "Menginstall Dropbear"
-# // Installing Dropbear
-apt install dropbear -y > /dev/null 2>&1
+apt install dropbear -y 
 wget -q -O /etc/default/dropbear "${REPO}config/dropbear.conf"
 chmod +x /etc/default/dropbear
 systemctl restart dropbear
@@ -1049,13 +1050,13 @@ print_install "Enable Service"
 function instal(){
 clear
     first_setup
-    nginx_install
     base_package
     make_folder_xray
     pasang_domain
     password_default
-    pasang_ssl
+    nginx_install
     install_xray
+    pasang_ssl
     ssh
     udp_mini
     ssh_slow
@@ -1088,7 +1089,7 @@ echo "" > /etc/xray/noob
 #sudo hostnamectl set-hostname $user
 secs_to_human "$(($(date +%s) - ${start}))"
 sudo hostnamectl set-hostname $username
-echo -e "${green} Script Successfull Installed"
+echo -e "${LIME} Script Successfull Installed"
 echo ""
 read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
 reboot
