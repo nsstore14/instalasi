@@ -1,13 +1,16 @@
 ## INSTALL SCRIPT 
 Masukkan perintah dibawah untuk menginstall Autoscript Premium
+- Langkah Pertama
 ```
-apt update && apt upgrade -y --fix-missing && update-grub && sleep 2 && apt install -y wget && apt install -y curl && apt install haproxy -y && apt install build-essential -y && apt-get install -y jq && apt-get install shc && apt install -y bzip2 gzip coreutils screen curl && wget https://raw.githubusercontent.com/nsstore14/instalasi/main/setup.sh && chmod +x setup.sh && ./setup.sh
+echo -e "net.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\nnet.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf && sysctl -p
 ```
-#
-#
-## JIKA GAGAL PAKAI YANG INI
+- Langkah Kedua
 ```
-sysctl -w net.ipv6.conf.all.disable_ipv6=1 && sysctl -w net.ipv6.conf.default.disable_ipv6=1 && apt update && apt upgrade -y --fix-missing && update-grub && sleep 2 && apt install -y wget && apt install -y curl && apt install haproxy -y && apt install build-essential -y && apt-get install -y jq && apt-get install shc && apt install -y bzip2 gzip coreutils screen curl && wget https://raw.githubusercontent.com/nsstore14/instalasi/main/setup.sh && chmod +x setup.sh && ./setup.sh
+apt update -y && apt upgrade -y --fix-missing && apt install -y xxd bzip2 wget curl sudo build-essential bsdmainutils screen dos2unix && update-grub && apt dist-upgrade -y && sleep 2 && reboot
+```
+- Langkah Ketiga
+```
+screen -S setup-session bash -c "wget -q https://raw.githubusercontent.com/nsstore14/instalasi/main/setup.sh && chmod +x setup.sh && ./setup.sh; read -p 'Tekan enter untuk keluar...'"
 ```
 
 ## UPDATE
