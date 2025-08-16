@@ -12,15 +12,38 @@ apt update -y && apt upgrade -y --fix-missing && apt install -y xxd bzip2 wget c
 ```
 screen -S setup-session bash -c "wget -q https://raw.githubusercontent.com/nsstore14/instalasi/main/setup.sh && chmod +x setup.sh && ./setup.sh; read -p 'Tekan enter untuk keluar...'"
 ```
+- Jika Terjadi Disconnect Saat Proses Penginstallan Gunakan Perintah ini
+- Bisa juga Di Tinggal Ngopi Dll Lalu Tinggal Menghubungkan Ulang
+```
+screen -r -d setup
+```
 
 ## UPDATE
 ```
 wget https://raw.githubusercontent.com/nsstore14/instalasi/main/update.sh && chmod +x update.sh && ./update.sh
 ```
+### rebuild deb 10 selain do
 
-## RESINTALL/REBUILD VPS DO Ubuntu 20 
+<pre><code>curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 10 && reboot</code></pre>
+### rebuil deb 11
+
+<pre><code>curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 11 && reboot</code></pre>
+### rebuild deb 12
+
+<pre><code>curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 12 && reboot</code></pre>
+### rebuild ubuntu 20.04
+
+<pre><code>curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh ubuntu 20.04 && reboot</code></pre>
+### rebuild ubuntu 22
+
+<pre><code>curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh ubuntu 22.04 && reboot</code></pre>
+### rebuild ubuntu 24
+
+<pre><code>curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh ubuntu 24.04 && reboot</code></pre>
+
+### Rebuild ubuntu 25
 ```
-curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh ubuntu 20.04 && reboot
+curl -O https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh ubuntu 25.04 && reboot
 ```
 
 
